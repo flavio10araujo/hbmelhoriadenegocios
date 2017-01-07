@@ -1,0 +1,33 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+		
+		<div class="col-sm-12 bg">
+		  	<div class="row">
+	     		<br />
+	     		<ol class="breadcrumb">
+					<li th:text="${game.name}" class="active"></li>
+				</ol>
+	      	</div>
+		  	
+		  	<div class="row">
+		    	<div class="col-sm-12">
+		      		<br />
+		      		<span th:each="level : ${levels}">
+		           		<a th:if="${level.opened}" th:href="@{'/games/'+${game.namelink}+'/'+${level.order}+'/1'}" style="margin-left:10px;margin-bottom:10px" class="btn btn-primary btn-lg" role="button" th:text="${level.name}"></a>
+		           		<button th:if="${not level.opened}" type="button" style="margin-left:10px;margin-bottom:10px" class="btn btn-primary btn-lg disabled" th:text="${level.name}" />
+		           	</span>
+		    	</div>
+	  		</div>
+	  		
+	  		<div class="row">
+	  			<br /><br /><br /><br /><br />
+	  		</div>
+		</div>
+	</div>
+</body>
+</html>

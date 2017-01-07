@@ -1,0 +1,60 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+	
+		<div class="row">
+	    	<div class="col-sm-12 bg">
+	      		<div class="row">
+	      			
+	      			<div th:if="${codRegister} == 1" class="alert alert-success">
+	  					<label th:utext="${msg}"></label>
+					</div>
+	      			
+	      			<div th:if="${codRegister} == 2" class="alert alert-warning">
+	  					<strong th:text="#{attention_}"></strong> <label th:utext="${msg}"></label>
+					</div>
+					
+					<h1>Comprar cr&#xE9;ditos</h1>
+					
+					<form id="f_credit" th:action="@{/buycredits}" method="post">
+		  				<div class="form-group">
+		    				<input type="number" class="form-control" required="true" name="quantity" id="quantity" placeholder="Informe a quantidade de cr&#xE9;ditos desejada" min="5" max="135" />
+		  				</div>
+		  				<input type="submit" data-loading-text="Aguarde, conectando ao sistema de pagamento..." class="btn btn-primary active" id="btnBuy" value="Comprar" />
+					</form>
+	      		</div>
+	    	</div>
+	  	</div>
+	  	
+	  	<script th:inline="javascript">
+	  		/*<![CDATA[*/	
+  			$(document).ready(function(){
+  				$("#btnBuy").click(function(){
+  					$(this).button('loading');
+  					if(!verifyForm()){
+  						$(this).button('reset');
+  					}
+  				});
+  			});
+
+	  		function verifyForm(){
+				if ($("#quantity").val() == "") {
+					return false;
+				}
+				
+				if ($("#quantity").val() < 5 || $("#quantity").val() > 135) {
+					return false;
+				}
+				
+				return true;
+			}
+	  		/*]]>*/
+		</script>
+	  	
+	</div>
+</body>
+</html>

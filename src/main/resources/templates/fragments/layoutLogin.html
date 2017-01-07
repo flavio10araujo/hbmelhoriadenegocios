@@ -1,0 +1,108 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<title th:text="#{title}"></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
+		
+		<style>
+			.navbarLog{padding-top:15px;padding-bottom:15px;border:0;border-radius:0;margin-bottom:0;font-size:12px;letter-spacing:5px}
+			.navbar-nav li a:hover{color:#1abc9c !important}
+			body{color:#f5f6f7}
+			.bg{background-color:#fff;color:#000}
+		</style>
+		
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	</head>
+
+	<body>
+		<!-- NAVBAR - ANONYMOUS -->
+		<nav class="navbarLog navbar navbar-inverse" sec:authorize="isAnonymous()">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
+				</div>
+		    	<ul class="nav navbar-nav navbar-right">
+		    		<li>
+			    		<form th:action="@{/login}" method="post" class="form-inline" role="form">
+			    			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			    			<table>
+			    				<tr>
+			    					<td>
+			  							<div class="form-group"><input type="text" name="email" id="email" required="true" autofocus="true" class="form-control" th:placeholder="#{app.login}" /></div>
+			  							<div class="form-group"><input type="password" name="password" id="password" required="true" class="form-control" th:placeholder="#{app.password}" /></div>
+			  							<input type="submit" class="btn btn-default" th:value="#{log_in}" />
+			    					</td>
+			    				</tr>
+			    				<tr>
+			    					<td>
+			   							<!--<label for="remember-me"><input type="checkbox" name="remember-me" id="remember-me" /> <label th:text="#{app.remember_me}"></label></label>-->
+			   							<a th:href="@{/passwordreset}">Esqueci minha senha</a>
+			    					</td>
+			    				</tr>
+			    			</table>
+			    		</form>
+		    		</li>
+		    	</ul>
+		  	</div>
+		</nav>
+		
+		<!-- NAVBAR - LOGGED IN -->
+		<nav class="navbar navbar-inverse" sec:authorize="isAuthenticated()">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
+		    	</div>
+		    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+	     			<li><a href="/admin" th:text="#{menu.admin.home}"></a></li>
+	   			</ul>
+		    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('TEACHER')">
+	     			<li class="dropdown">
+	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{app.teacher}"><span class="caret"></span></a>
+	       				<ul class="dropdown-menu">
+	         				<li><a th:href="@{/teacher/class}" th:text="#{menu.teacher.class}"></a></li>
+	         				<li><a th:href="@{/teacher/student}" th:text="#{menu.teacher.student}"></a></li>
+	         				<li><a th:href="@{/teacher/report}" th:text="#{menu.teacher.report}"></a></li>
+	       				</ul>
+	     			</li>
+	   			</ul>
+		    	<ul class="nav navbar-nav navbar-right">
+		    		<li data-toggle="tooltip" data-placement="bottom" th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>
+		    		<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
+		    		<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.credit"></span></a></li>
+	     			<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.contact}"><a th:href="@{/contact}"><span class="glyphicon glyphicon-envelope" th:text="' '+#{app.contact}"></span></a></li>
+	     			<li data-toggle="tooltip" data-placement="bottom" th:title="#{log_out}"><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out" th:text="' '+#{log_out}"></span></a></li>
+		    	</ul>
+		  	</div>
+		</nav>
+		
+		<div class="container">
+			<div layout:fragment="content"></div>
+		</div>
+		
+		<nav class="navbar navbar-inverse navbar-fixed-bottom" sec:authorize="isAnonymous()">
+			<div class="container">
+				<p class="navbar-text"><a th:href="@{/}" th:text="#{company}"></a></p>
+				<p class="navbar-text"><a th:href="@{/contact}" data-toggle="tooltip" data-placement="top" th:title="#{msg.contact}"><span class="glyphicon glyphicon-envelope" th:text="' '+#{app.contact}"></span></a></p>
+			</div>
+		</nav>
+		
+		<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
+		
+		<script>function logout(){form=document.getElementById("f_logout");form.submit();}</script>
+		
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			$(document).ready(function(){
+    			$('[data-toggle="tooltip"]').tooltip(); 
+			});
+			/*]]>*/
+		</script>
+	</body>
+</html>
