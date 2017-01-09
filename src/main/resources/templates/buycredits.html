@@ -18,14 +18,17 @@
 	  					<strong th:text="#{attention_}"></strong> <label th:utext="${msg}"></label>
 					</div>
 					
-					<h1>Comprar cr&#xE9;ditos</h1>
+					<h1>Comprar aulas</h1>
 					
 					<form id="f_credit" th:action="@{/buycredits}" method="post">
 		  				<div class="form-group">
-		    				<input type="number" class="form-control" required="true" name="quantity" id="quantity" placeholder="Informe a quantidade de cr&#xE9;ditos desejada" min="5" max="135" />
+		    				<input type="number" class="form-control" required="true" name="quantity" id="quantity" placeholder="Informe a quantidade de aulas desejada" min="10" max="30" />
 		  				</div>
 		  				<input type="submit" data-loading-text="Aguarde, conectando ao sistema de pagamento..." class="btn btn-primary active" id="btnBuy" value="Comprar" />
 					</form>
+					
+					<h6>Custo por aula: R$ 15,00</h6>
+					<h6>Compra permitida para um mínimo de 10 e máximo de 30 aulas.</h6>
 	      		</div>
 	    	</div>
 	  	</div>

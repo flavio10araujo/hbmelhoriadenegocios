@@ -61,12 +61,12 @@ public class PaymentController extends BaseController {
 	@RequestMapping(value = {"/buycredits"}, method = RequestMethod.POST)
 	public final String buycreditssubmit(final Model model, @RequestParam("quantity") Integer quantity) {
 
-		if (quantity < Integer.parseInt(applicationResourceBundle.getString("credits.buy.min")) 
-			|| quantity > Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"))) {
-			
+		int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));
+		int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"));
+		
+		if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
 			model.addAttribute("codRegister", "2");
-			// TODO - alterar essa mensagem para pegar do messages.properties passando os parâmetros 5 e 135.
-			model.addAttribute("msg", "A quantidade de créditos deve ser entre 5 e 135.");
+			model.addAttribute("msg", "A quantidade de créditos deve ser entre " + creditsBuyMin + " e " + creditsBuyMax + ".");
 			return URL_BUYCREDITS;
 		}
 		
@@ -113,7 +113,7 @@ public class PaymentController extends BaseController {
 			"0001", // Item's number.
 			applicationResourceBundle.getString("payment.nf.description"), // Item's name.
 			quantity, // Item's quantity.
-			new BigDecimal("1.00"), // Price for each unity.
+			new BigDecimal(applicationResourceBundle.getString("priceForEachUnity")), // Price for each unity.
 			new Long(0), // Weight.
 			null // ShippingCost
 		);
