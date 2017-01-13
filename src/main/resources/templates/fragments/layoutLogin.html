@@ -25,13 +25,14 @@
 
 	<body>
 		<!-- NAVBAR - ANONYMOUS -->
-		<nav class="navbarLog navbar navbar-inverse" sec:authorize="isAnonymous()">
+		<nav class="navbarLog navbar navbar-default" sec:authorize="isAnonymous()">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
+					<!--<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>-->
+					<a class="navbar-left" th:href="@{/}"><img th:src="@{/static/img/logo.png}" /></a>
 				</div>
 		    	<ul class="nav navbar-nav navbar-right">
-		    		<li>
+		    		<li class="navbar-right">
 			    		<form th:action="@{/login}" method="post" class="form-inline" role="form">
 			    			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			    			<table>
